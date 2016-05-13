@@ -69,6 +69,7 @@ Terminology
 
 Current build status
 ====================
+
 Linux: [![Circle CI](https://circleci.com/gh/conda-forge/capnproto-feedstock.svg?style=svg)](https://circleci.com/gh/conda-forge/capnproto-feedstock)
 OSX: [![TravisCI](https://travis-ci.org/conda-forge/capnproto-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/capnproto-feedstock) 
 Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/capnproto-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/capnproto-feedstock/branch/master)
