@@ -8,6 +8,7 @@ cmake ^
     -DCAPNP_LITE=ON ^
     -DBUILD_TESTING=OFF ^
     -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+    -DCMAKE_INSTALL_LIBDIR=lib ^
     ..\c++
 if errorlevel 1 exit 1
 
