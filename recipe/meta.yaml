@@ -10,17 +10,17 @@ source:
   md5: 481d0f2fe24f46ce25234ea9704ef0b4
 
 build:
-  number: 0
-  skip: True  # [win and py<35]
-  features:
-    - vc14  # [win and py35]
+  number: 1
+  skip: True  # [win and vc<14]
 
 requirements:
+    build:
+    - cmake
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
   build:
     # Python dependency is a workaround which is required when using features:
     # https://github.com/conda-forge/staged-recipes/wiki/VC-features
-    - python  # [win]
-    - cmake
   run:
 
 test:
