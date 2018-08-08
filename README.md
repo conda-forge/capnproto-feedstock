@@ -14,14 +14,16 @@ Summary: An insanely fast data interchange format and capability-based RPC syste
 Current build status
 ====================
 
-Linux: [![Circle CI](https://circleci.com/gh/conda-forge/capnproto-feedstock.svg?style=shield)](https://circleci.com/gh/conda-forge/capnproto-feedstock)
-OSX: [![TravisCI](https://travis-ci.org/conda-forge/capnproto-feedstock.svg?branch=master)](https://travis-ci.org/conda-forge/capnproto-feedstock)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/conda-forge/capnproto-feedstock?svg=True)](https://ci.appveyor.com/project/conda-forge/capnproto-feedstock/branch/master)
+[![Linux](https://img.shields.io/circleci/project/github/conda-forge/capnproto-feedstock/master.svg?label=Linux)](https://circleci.com/gh/conda-forge/capnproto-feedstock)
+[![OSX](https://img.shields.io/travis/conda-forge/capnproto-feedstock/master.svg?label=macOS)](https://travis-ci.org/conda-forge/capnproto-feedstock)
+[![Windows](https://img.shields.io/appveyor/ci/conda-forge/capnproto-feedstock/master.svg?label=Windows)](https://ci.appveyor.com/project/conda-forge/capnproto-feedstock/branch/master)
 
 Current release info
 ====================
-Version: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/capnproto/badges/version.svg)](https://anaconda.org/conda-forge/capnproto)
-Downloads: [![Anaconda-Server Badge](https://anaconda.org/conda-forge/capnproto/badges/downloads.svg)](https://anaconda.org/conda-forge/capnproto)
+
+| Name | Downloads | Version | Platforms |
+| --- | --- | --- | --- |
+| [![Conda Recipe](https://img.shields.io/badge/recipe-capnproto-green.svg)](https://anaconda.org/conda-forge/capnproto) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/capnproto.svg)](https://anaconda.org/conda-forge/capnproto) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/capnproto.svg)](https://anaconda.org/conda-forge/capnproto) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/capnproto.svg)](https://anaconda.org/conda-forge/capnproto) |
 
 Installing capnproto
 ====================
