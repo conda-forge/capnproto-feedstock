@@ -4,7 +4,7 @@ cd build
 :: CAPNP_LITE=ON is required since Cap'n Proto doesn't have complete support on MSVC:
 :: https://github.com/sandstorm-io/capnproto/issues/227
 cmake ^
-    -G"%CMAKE_GENERATOR%" ^
+    -G "NMake Makefiles" ^
     -DCAPNP_LITE=ON ^
     -DBUILD_TESTING=OFF ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
@@ -12,8 +12,8 @@ cmake ^
     ..\c++
 if errorlevel 1 exit 1
 
-cmake --build . --config Release
+nmake
 if errorlevel 1 exit 1
 
-cmake --build . --config Release --target install
+nmake install
 if errorlevel 1 exit 1
