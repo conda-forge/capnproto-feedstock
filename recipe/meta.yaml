@@ -1,4 +1,4 @@
-{% set version = "0.6.1" %}
+{% set version = "0.9.0" %}
 
 package:
   name: capnproto
@@ -7,11 +7,11 @@ package:
 source:
   fn: v{{ version }}.tar.gz
   url: https://github.com/sandstorm-io/capnproto/archive/v{{ version }}.tar.gz
-  md5: 481d0f2fe24f46ce25234ea9704ef0b4
+  md5: c8eece5732e6e41bf20fde1b638a989c
 
 build:
-  number: 2
-  skip: True  # [win and vc<14]
+  number: 0
+  skip: true  # [win and vc<14]
 
 requirements:
   build:
@@ -41,6 +41,7 @@ test:
 about:
   home: http://capnproto.org
   license: MIT
+  license_file: LICENSE
   summary: An insanely fast data interchange format and capability-based RPC system.
 
 extra:
