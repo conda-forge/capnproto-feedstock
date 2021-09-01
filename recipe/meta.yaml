@@ -41,6 +41,7 @@ test:
 about:
   home: http://capnproto.org
   license: MIT
+  license_file: LICENSE
   summary: An insanely fast data interchange format and capability-based RPC system.
 
 extra:
