@@ -18,6 +18,10 @@ requirements:
     - cmake
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+  host:
+    - libcxx == 9.0.0
+  run:
+    - libcxx == 9.0.0
 
 test:
   commands:
