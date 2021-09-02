@@ -19,9 +19,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - libcxx ==9.0.0
+    - libcxx ==9.0.1
   run:
-    - libcxx ==9.0.0
+    - libcxx ==9.0.1
 
 test:
   commands:
