@@ -1,19 +1,18 @@
 mkdir build
 cd build
 
-:: CAPNP_LITE=ON is required since Cap'n Proto doesn't have complete support on MSVC:
-:: https://github.com/sandstorm-io/capnproto/issues/227
 cmake ^
-    -G "NMake Makefiles" ^
-    -DCAPNP_LITE=ON ^
-    -DBUILD_TESTING=OFF ^
-    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
+    -DCMAKE_INSTALL_PREFIX="%PREFIX%" ^
     -DCMAKE_INSTALL_LIBDIR=lib ^
-    ..\c++
+    ..
 if errorlevel 1 exit 1
 
-nmake
+cmake --build . --target ALL_BUILD --config Release --parallel %CPU_COUNT%
 if errorlevel 1 exit 1
 
-nmake install
+@REM only available in master branch for now, and only works for Debug config:
+@REM cmake --build . --target RUN_TESTS
+@REM if errorlevel 1 exit 1
+
+cmake --build . --target INSTALL --config Release
 if errorlevel 1 exit 1
