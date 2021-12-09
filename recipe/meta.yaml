@@ -1,4 +1,4 @@
-{% set version = "0.6.1" %}
+{% set version = "0.9.1" %}
 
 package:
   name: capnproto
@@ -6,26 +6,29 @@ package:
 
 source:
   fn: v{{ version }}.tar.gz
-  url: https://github.com/sandstorm-io/capnproto/archive/v{{ version }}.tar.gz
-  md5: 481d0f2fe24f46ce25234ea9704ef0b4
+  url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
+  md5: 3ba09702784e9ae1d53a5d9de23c6dd7
 
 build:
-  number: 2
-  skip: True  # [win and vc<14]
+  number: 0
 
 requirements:
   build:
     - cmake
+    - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - openssl 1.1*
+    - zlib
+  run:
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
 test:
   commands:
-    # NOTE: There are no executables on Windows in Lite mode
-    - capnp --help  # [unix]
-    - capnpc --help  # [unix]
-    - capnpc-c++ --help  # [unix]
-    - capnpc-capnp --help  # [unix]
+    - capnp --help
+    - capnpc --help
+    - capnpc-c++ --help
+    - capnpc-capnp --help
 
     - test -d "$PREFIX/include/capnp"  # [unix]
     - if not exist %LIBRARY_INC%\\capnp exit 1  # [win]
@@ -40,6 +43,7 @@ test:
 
 about:
   home: http://capnproto.org
+  license_file: LICENSE
   license: MIT
   summary: An insanely fast data interchange format and capability-based RPC system.
 

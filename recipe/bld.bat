@@ -1,19 +1,19 @@
 mkdir build
 cd build
 
-:: CAPNP_LITE=ON is required since Cap'n Proto doesn't have complete support on MSVC:
-:: https://github.com/sandstorm-io/capnproto/issues/227
 cmake ^
-    -G "NMake Makefiles" ^
-    -DCAPNP_LITE=ON ^
-    -DBUILD_TESTING=OFF ^
+    -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -DCMAKE_INSTALL_LIBDIR=lib ^
-    ..\c++
+    ..
 if errorlevel 1 exit 1
 
-nmake
+cmake --build . --config Release
 if errorlevel 1 exit 1
 
-nmake install
+@REM Some of the tests fail in part 2 of the tests (SegFault when build type is Release, unexpected value in one test when build typ is Debug)
+@REM cmake --build . --target check --config Release
+@REM if errorlevel 1 exit 1
+
+cmake --build . --target INSTALL --config Release
 if errorlevel 1 exit 1
