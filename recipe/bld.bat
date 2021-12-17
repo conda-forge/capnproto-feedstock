@@ -3,6 +3,7 @@ cd build
 
 cmake ^
     -DCMAKE_BUILD_TYPE=Release ^
+    -DCMAKE_POSITION_INDEPENDENT_CODE=1 ^
     -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
     -DCMAKE_INSTALL_LIBDIR=lib ^
     ..
