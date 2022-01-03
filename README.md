@@ -150,6 +150,5 @@ Feedstock Maintainers
 =====================
 
 * [@Shelnutt2](https://github.com/Shelnutt2/)
-* [@frol](https://github.com/frol/)
 * [@ihnorton](https://github.com/ihnorton/)
 
