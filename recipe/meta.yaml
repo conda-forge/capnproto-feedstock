@@ -10,7 +10,7 @@ source:
   md5: 3ba09702784e9ae1d53a5d9de23c6dd7
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -50,6 +50,5 @@ about:
 extra:
   recipe-maintainers:
     - LehMaxence
-    - frol
     - ihnorton
     - Shelnutt2
