@@ -18,8 +18,10 @@ requirements:
     - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - autotools  # [unix]
     - automake   # [unix]
+  host:
+    - zlib
+    - openssl
   run:
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
