@@ -2,6 +2,7 @@
 
 set -x
 
+cd c++
 autoreconf -vfi
 ./configure \
     --enable-shared \
