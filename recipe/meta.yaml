@@ -19,6 +19,8 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - automake   # [unix]
+    - libtool    # [unix]
+    - binutils    # [unix]
   host:
     - zlib
     - openssl
