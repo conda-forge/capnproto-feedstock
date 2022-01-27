@@ -10,11 +10,13 @@ source:
   md5: 3ba09702784e9ae1d53a5d9de23c6dd7
 
 build:
-  number: 4
+  number: 5
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
     - {{ pin_subpackage('capnproto', max_pin='x.x.x') }}
+  ignore_prefix_files:
+    - bin/capnp
 
 requirements:
   build:
@@ -27,16 +29,24 @@ requirements:
     - binutils    # [unix]
   host:
     - zlib
-    - openssl
+    - openssl 1.1*
   run:
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
 test:
+  source_files:
+    - c++/samples
   commands:
     - capnp --help
     - capnpc --help
     - capnpc-c++ --help
     - capnpc-capnp --help
+
+    - capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp  # [unix]
+    - test -f c++/samples/addressbook.capnp.c++  # [unix]
+
+    - capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp  # [win]
+    - if not exist c++/samples/addressbook.capnp.c++ exit 1  # [win]
 
     - test -d "$PREFIX/include/capnp"  # [unix]
     - if not exist %LIBRARY_INC%\\capnp exit 1  # [win]
