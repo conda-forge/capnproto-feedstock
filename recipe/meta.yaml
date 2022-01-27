@@ -16,7 +16,7 @@ build:
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
     - {{ pin_subpackage('capnproto', max_pin='x.x.x') }}
   ignore_prefix_files:
-    - capnp
+    - bin/capnp
 
 requirements:
   build:
