@@ -10,11 +10,13 @@ source:
   md5: 3ba09702784e9ae1d53a5d9de23c6dd7
 
 build:
-  number: 4
+  number: 5
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
     - {{ pin_subpackage('capnproto', max_pin='x.x.x') }}
+  ignore_prefix_files:
+    - capnp
 
 requirements:
   build:
