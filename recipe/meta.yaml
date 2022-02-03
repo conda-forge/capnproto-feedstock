@@ -17,6 +17,8 @@ build:
     - {{ pin_subpackage('capnproto', max_pin='x.x.x') }}
   ignore_prefix_files:
     - bin/capnp
+  missing_dso_whitelist:  # [linux]
+    - $RPATH/ld64.so.1    # [linux]
 
 requirements:
   build:
