@@ -10,7 +10,7 @@ source:
   md5: 3ba09702784e9ae1d53a5d9de23c6dd7
 
 build:
-  number: 5
+  number: 0
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
