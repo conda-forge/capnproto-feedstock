@@ -9,8 +9,6 @@ if [[ $target_platform == osx-* ]]; then
         echo "copying config to $config_folder ...\n"
         cp -v $BUILD_PREFIX/share/libtool/build-aux/config.* $config_folder
     done
-    autoconf
-else
     autoreconf -vfi
 fi
 
