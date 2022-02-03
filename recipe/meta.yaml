@@ -25,12 +25,14 @@ requirements:
     - cmake  # [win]
     - make  # [not win]
     - sed   # [osx]
+    - gawk  # [osx]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - automake   # [unix]
     - autoconf   # [unix]
     - libtool    # [unix]
   host:
+    - libiconv  # [osx]
     - zlib
     - openssl 1.1*
   run:
