@@ -22,6 +22,7 @@ requirements:
   build:
     - cmake  # [win]
     - make  # [not win]
+    - sed   # [osx]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - automake   # [unix]
