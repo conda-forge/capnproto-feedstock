@@ -5,9 +5,9 @@ package:
   version: {{ version }}
 
 source:
-  fn: v{{ version }}.tar.gz
-  url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: 3ba09702784e9ae1d53a5d9de23c6dd7
+  fn: capnproto-c++-{{ version }}.tar.gz
+  url: https://capnproto.org/capnproto-c++-0.9.1.tar.gz
+  md5: 4e86cda4bd894c94b1ac96bf3c447b8e
 
 build:
   number: 0
@@ -31,6 +31,7 @@ requirements:
     - automake   # [unix]
     - autoconf   # [unix]
     - libtool    # [unix]
+    - llvm-tools  # [osx]
   host:
     - libiconv  # [osx]
     - zlib
