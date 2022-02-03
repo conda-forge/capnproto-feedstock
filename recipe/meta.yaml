@@ -40,19 +40,11 @@ requirements:
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
 test:
-  source_files:
-    - samples
   commands:
     - capnp --help
     - capnpc --help
     - capnpc-c++ --help
     - capnpc-capnp --help
-
-    - capnpc -I"$PREFIX/include" -oc++ samples/addressbook.capnp  # [unix]
-    - test -f samples/addressbook.capnp.c++  # [unix]
-
-    - capnpc -I"%LIBRARY_INC%" -oc++ samples/addressbook.capnp  # [win]
-    - if not exist samples/addressbook.capnp.c++ exit 1  # [win]
 
     - test -d "$PREFIX/include/capnp"  # [unix]
     - if not exist %LIBRARY_INC%\\capnp exit 1  # [win]
