@@ -8,18 +8,19 @@ if [[ $target_platform == osx-* ]]; then
         echo "copying config to $config_folder ...\n"
         cp -v $BUILD_PREFIX/share/libtool/build-aux/config.* $config_folder
     done
-
-fi
-cd c++
-autoreconf -vfi
-
-if [[ $target_platform == "linux-"* ]]; then
+    ./configure --enable-shared --prefix=$PREFIX
+    cd c++
+else
+  cd c++
+  autoreconf -vfi
+  if [[ $target_platform == "linux-"* ]]; then
     export LIBS="-lrt $LIBS"
-fi
+  fi
 
-./configure \
+  ./configure \
     --enable-shared \
     --prefix=$PREFIX
+fi
 
 if [[ $target_platform == "linux-s390x"* ]]; then
     make -j${CPU_COUNT} check || true
