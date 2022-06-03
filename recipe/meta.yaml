@@ -1,4 +1,4 @@
-{% set version = "0.9.1" %}
+{% set version = "0.10.0" %}
 
 package:
   name: capnproto
@@ -7,10 +7,10 @@ package:
 source:
   fn: v{{ version }}.tar.gz
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: 3ba09702784e9ae1d53a5d9de23c6dd7
+  md5: 9900502e2661314f486c39b1b22b7f18
 
 build:
-  number: 5
+  number: 0
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
