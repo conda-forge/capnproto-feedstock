@@ -1,4 +1,4 @@
-{% set version = "0.10.2" %}
+{% set version = "0.10.3" %}
 
 package:
   name: capnproto
@@ -7,7 +7,7 @@ package:
 source:
   fn: v{{ version }}.tar.gz
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: 1dd58443122cf3b51eb9d6eebb95c779
+  md5: 398a26d4cc5c2eee83de55ebd7c17392
 
 build:
   number: 0
