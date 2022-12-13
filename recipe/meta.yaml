@@ -10,7 +10,7 @@ source:
   md5: effe0da6c454304a077e1eb59e89d41d
 
 build:
-  number: 0
+  number: 1
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
@@ -29,7 +29,7 @@ requirements:
     - binutils    # [unix]
   host:
     - zlib
-    - openssl 1.1*
+    - openssl
   run:
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
 
