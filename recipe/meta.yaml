@@ -1,4 +1,4 @@
-{% set version = "0.9.1" %}
+{% set version = "0.10.4" %}
 
 package:
   name: capnproto
@@ -6,12 +6,12 @@ package:
 
 source:
   url: https://capnproto.org/capnproto-c++-{{ version }}.tar.gz
-  sha256: 83680aaef8c192b884e38eab418b8482d321af6ae7ab7befa3a9370b8e716aad
-  patches:
-    - patches/0001-openssl3.patch
+  sha256: 981e7ef6dbe3ac745907e55a78870fbb491c5d23abd4ebc04e20ec235af4458c
+  # patches:
+  #   - patches/0001-openssl3.patch
 
 build:
-  number: 1
+  number: 0
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
