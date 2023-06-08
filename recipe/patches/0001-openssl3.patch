@@ -1,0 +1,185 @@
+From 9c0faeb5193d76137eb9298da79256c45f807688 Mon Sep 17 00:00:00 2001
+From: Jean-Christophe Morin <jcmorin@anaconda.com>
+Date: Thu, 8 Jun 2023 18:23:52 -0400
+Subject: [PATCH] Fix for OpenSSL 3.
+
+Patches taken from https://github.com/capnproto/capnproto/pull/1596
+
+---
+ c++/src/kj/compat/readiness-io.h |  3 ++
+ c++/src/kj/compat/tls-test.c++   | 50 ++++++++++++++++++++++++--------
+ c++/src/kj/compat/tls.c++        | 21 +++++++++++++-
+ 3 files changed, 61 insertions(+), 13 deletions(-)
+
+diff --git a/c++/src/kj/compat/readiness-io.h b/c++/src/kj/compat/readiness-io.h
+index d55d8474..89f69b49 100644
+--- a/c++/src/kj/compat/readiness-io.h
++++ b/c++/src/kj/compat/readiness-io.h
+@@ -43,6 +43,9 @@ public:
+   kj::Promise<void> whenReady();
+   // Returns a promise that resolves when read() will return non-null.
+ 
++  bool isAtEnd() { return eof; }
++  // Returns true if read() would return zero.
++
+ private:
+   AsyncInputStream& input;
+   kj::ForkedPromise<void> pumpTask = nullptr;
+diff --git a/c++/src/kj/compat/tls-test.c++ b/c++/src/kj/compat/tls-test.c++
+index 7c5cf038..c2ac0b43 100644
+--- a/c++/src/kj/compat/tls-test.c++
++++ b/c++/src/kj/compat/tls-test.c++
+@@ -467,6 +467,24 @@ KJ_TEST("TLS basics") {
+   auto server = serverPromise.wait(test.io.waitScope);
+ 
+   test.testConnection(*client, *server);
++
++  // Test clean shutdown.
++  {
++    auto eofPromise = server->readAllText();
++    KJ_EXPECT(!eofPromise.poll(test.io.waitScope));
++    client->shutdownWrite();
++    KJ_ASSERT(eofPromise.poll(test.io.waitScope));
++    KJ_EXPECT(eofPromise.wait(test.io.waitScope) == ""_kj);
++  }
++
++  // Test UNCLEAN shutdown in other direction.
++  {
++    auto eofPromise = client->readAllText();
++    KJ_EXPECT(!eofPromise.poll(test.io.waitScope));
++    { auto drop = kj::mv(server); }
++    KJ_EXPECT(eofPromise.poll(test.io.waitScope));
++    KJ_EXPECT_THROW(DISCONNECTED, eofPromise.wait(test.io.waitScope));
++  }
+ }
+ 
+ KJ_TEST("TLS peer identity") {
+@@ -682,22 +700,29 @@ void expectInvalidCert(kj::StringPtr hostname, TlsCertificate cert, kj::StringPt
+   KJ_EXPECT_THROW_MESSAGE(message, clientPromise.wait(test.io.waitScope));
+ }
+ 
++// OpenSSL 3.0 changed error messages
++#if OPENSSL_VERSION_NUMBER >= 0x30000000L && !defined(OPENSSL_IS_BORINGSSL)
++#define SSL_MESSAGE_DIFFERENT_IN_V3(v11, v30) v30
++#else
++#define SSL_MESSAGE_DIFFERENT_IN_V3(v11, v30) v11
++#endif
++
+ KJ_TEST("TLS certificate validation") {
+   expectInvalidCert("wrong.com", TlsCertificate(kj::str(VALID_CERT, INTERMEDIATE_CERT)),
+-                    "Hostname mismatch");
++                    SSL_MESSAGE_DIFFERENT_IN_V3("Hostname mismatch", "hostname mismatch"));
+   expectInvalidCert("example.com", TlsCertificate(VALID_CERT),
+                     "unable to get local issuer certificate");
+   expectInvalidCert("example.com", TlsCertificate(kj::str(EXPIRED_CERT, INTERMEDIATE_CERT)),
+                     "certificate has expired");
+   expectInvalidCert("example.com", TlsCertificate(SELF_SIGNED_CERT),
+-                    "self signed certificate");
++      SSL_MESSAGE_DIFFERENT_IN_V3("self signed certificate", "self-signed certificate"));
+ }
+ 
+ // BoringSSL seems to print error messages differently.
+ #ifdef OPENSSL_IS_BORINGSSL
+-#define SSL_MESSAGE(interesting, boring) boring
++#define SSL_MESSAGE_DIFFERENT_IN_BORINGSSL(interesting, boring) boring
+ #else
+-#define SSL_MESSAGE(interesting, boring) interesting
++#define SSL_MESSAGE_DIFFERENT_IN_BORINGSSL(interesting, boring) interesting
+ #endif
+ 
+ KJ_TEST("TLS client certificate verification") {
+@@ -721,14 +746,15 @@ KJ_TEST("TLS client certificate verification") {
+     auto serverPromise = test.tlsServer.wrapServer(kj::mv(pipe.ends[1]));
+ 
+     KJ_EXPECT_THROW_MESSAGE(
+-        SSL_MESSAGE("peer did not return a certificate",
+-                    "PEER_DID_NOT_RETURN_A_CERTIFICATE"),
++        SSL_MESSAGE_DIFFERENT_IN_BORINGSSL("peer did not return a certificate",
++                                           "PEER_DID_NOT_RETURN_A_CERTIFICATE"),
+         serverPromise.wait(test.io.waitScope));
+ #if !KJ_NO_EXCEPTIONS  // if exceptions are disabled, we're now in a bad state because
+                        // KJ_EXPECT_THROW_MESSAGE() runs in a forked child process.
+     KJ_EXPECT_THROW_MESSAGE(
+-        SSL_MESSAGE("alert",  // "alert handshake failure" or "alert certificate required"
+-                    "CERTIFICATE_REQUIRED"),
++        SSL_MESSAGE_DIFFERENT_IN_BORINGSSL(
++            "alert",  // "alert handshake failure" or "alert certificate required"
++            "ALERT"), // "ALERT_HANDSHAKE_FAILURE" or "ALERT_CERTIFICATE_REQUIRED"
+         clientPromise.wait(test.io.waitScope));
+ #endif
+   }
+@@ -749,14 +775,14 @@ KJ_TEST("TLS client certificate verification") {
+     auto serverPromise = test.tlsServer.wrapServer(kj::mv(pipe.ends[1]));
+ 
+     KJ_EXPECT_THROW_MESSAGE(
+-        SSL_MESSAGE("certificate verify failed",
+-                    "CERTIFICATE_VERIFY_FAILED"),
++        SSL_MESSAGE_DIFFERENT_IN_BORINGSSL("certificate verify failed",
++                                           "CERTIFICATE_VERIFY_FAILED"),
+         serverPromise.wait(test.io.waitScope));
+ #if !KJ_NO_EXCEPTIONS  // if exceptions are disabled, we're now in a bad state because
+                        // KJ_EXPECT_THROW_MESSAGE() runs in a forked child process.
+     KJ_EXPECT_THROW_MESSAGE(
+-        SSL_MESSAGE("alert unknown ca",
+-                    "TLSV1_ALERT_UNKNOWN_CA"),
++        SSL_MESSAGE_DIFFERENT_IN_BORINGSSL("alert unknown ca",
++                                           "TLSV1_ALERT_UNKNOWN_CA"),
+         clientPromise.wait(test.io.waitScope));
+ #endif
+   }
+diff --git a/c++/src/kj/compat/tls.c++ b/c++/src/kj/compat/tls.c++
+index 05bf5d53..cc5debbe 100644
+--- a/c++/src/kj/compat/tls.c++
++++ b/c++/src/kj/compat/tls.c++
+@@ -58,6 +58,13 @@ void throwOpensslError() {
+ 
+   kj::Vector<kj::String> lines;
+   while (unsigned long long error = ERR_get_error()) {
++#ifdef SSL_R_UNEXPECTED_EOF_WHILE_READING
++    // OpenSSL 3.0+ reports unexpected disconnects this way.
++    if (ERR_GET_REASON(error) == SSL_R_UNEXPECTED_EOF_WHILE_READING) {
++      kj::throwFatalException(KJ_EXCEPTION(DISCONNECTED,
++          "peer disconnected without gracefully ending TLS session"));
++    }
++#endif
+     char message[1024];
+     ERR_error_string_n(error, message, sizeof(message));
+     lines.add(kj::heapString(message));
+@@ -321,8 +328,12 @@ private:
+           throwOpensslError();
+         case SSL_ERROR_SYSCALL:
+           if (result == 0) {
++            // OpenSSL pre-3.0 reports unexpected disconnects this way. Note that 3.0+ report it
++            // as SSL_ERROR_SSL with the reason SSL_R_UNEXPECTED_EOF_WHILE_READING, which is
++            // handled in throwOpensslError().
+             disconnected = true;
+-            return size_t(0);
++            return KJ_EXCEPTION(DISCONNECTED,
++                "peer disconnected without gracefully ending TLS session");
+           } else {
+             // According to documentation we shouldn't get here, because our BIO never returns an
+             // "error". But in practice we do get here sometimes when the peer disconnects
+@@ -359,12 +370,20 @@ private:
+ 
+   static long bioCtrl(BIO* b, int cmd, long num, void* ptr) {
+     switch (cmd) {
++      case BIO_CTRL_EOF:
++        return reinterpret_cast<TlsConnection*>(BIO_get_data(b))->readBuffer.isAtEnd();
+       case BIO_CTRL_FLUSH:
+         return 1;
+       case BIO_CTRL_PUSH:
+       case BIO_CTRL_POP:
+         // Informational?
+         return 0;
++#ifdef BIO_CTRL_GET_KTLS_SEND
++      case BIO_CTRL_GET_KTLS_SEND:
++      case BIO_CTRL_GET_KTLS_RECV:
++        // TODO(someday): Support kTLS if the underlying stream is a raw socket.
++        return 0;
++#endif
+       default:
+         KJ_LOG(WARNING, "unimplemented bio_ctrl", cmd);
+         return 0;
+-- 
+2.41.0
+
