@@ -7,8 +7,6 @@ package:
 source:
   url: https://capnproto.org/capnproto-c++-{{ version }}.tar.gz
   sha256: 981e7ef6dbe3ac745907e55a78870fbb491c5d23abd4ebc04e20ec235af4458c
-  # patches:
-  #   - patches/0001-openssl3.patch
 
 build:
   number: 0

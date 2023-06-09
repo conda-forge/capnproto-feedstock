@@ -20,6 +20,9 @@ CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" \
     --enable-shared \
     --prefix=$PREFIX
 
+# So that the tests pass
+mkdir $PREFIX/ssl/certs
+
 if [[ $target_platform == "linux-s390x"* ]] || [[ $target_platform == "osx-arm"* ]]; then
     make -j${CPU_COUNT} check || true
 else
