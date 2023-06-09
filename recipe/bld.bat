@@ -15,7 +15,7 @@ if errorlevel 1 exit 1
 
 @REM Some of the tests fail in part 2 of the tests (SegFault when build type is Release, unexpected value in one test when build typ is Debug)
 @REM cmake --build . --target check --config Release
-#REM if errorlevel 1 exit 1
+@REM if errorlevel 1 exit 1
 
 cmake --build . --target INSTALL --config Release
 if errorlevel 1 exit 1
