@@ -31,8 +31,6 @@ requirements:
     - autoconf   # [unix]
     - libtool    # [unix]
     - llvm-tools  # [osx]
-    - patch       # [not win]
-    - m2-patch    # [win]
   host:
     - zlib
     - openssl {{ openssl }}
