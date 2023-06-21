@@ -36,7 +36,7 @@ requirements:
     - openssl {{ openssl }}
   run:
     - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
-    - openssl 3.*
+    - openssl  # exact pin handled through openssl run_exports
 
 test:
   commands:
