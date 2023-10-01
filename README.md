@@ -180,6 +180,3 @@ Feedstock Maintainers
 * [@Shelnutt2](https://github.com/Shelnutt2/)
 * [@ihnorton](https://github.com/ihnorton/)
 
-
-<!-- dummy commit to enable rerendering -->
-
