@@ -1,4 +1,4 @@
-{% set version = "1.0.1.1" %}
+{% set version = "1.0.2" %}
 
 package:
   name: capnproto
@@ -7,7 +7,7 @@ package:
 source:
   fn: v{{ version }}.tar.gz
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: effe0da6c454304a077e1eb59e89d41d
+  md5: 4dd1aaacff63781087e89097f9b02542
 
 build:
   number: 1
@@ -31,19 +31,19 @@ requirements:
     - zlib
     - openssl
   run:
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx and x86_64]
+    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx]
 
 test:
   source_files:
     - c++/samples
   commands:
-    - capnp --help
-    - capnpc --help
-    - capnpc-c++ --help
-    - capnpc-capnp --help
+    - capnp --help  # [not (osx and arm64)]
+    - capnpc --help  # [not (osx and arm64)]
+    - capnpc-c++ --help  # [not (osx and arm64)]
+    - capnpc-capnp --help  # [not (osx and arm64)]
 
-    - capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp  # [unix]
-    - test -f c++/samples/addressbook.capnp.c++  # [unix]
+    - capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp  # [unix and (not (osx and arm64))]
+    - test -f c++/samples/addressbook.capnp.c++  # [unix and (not (osx and arm64))]
 
     - capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp  # [win]
     - if not exist c++/samples/addressbook.capnp.c++ exit 1  # [win]
