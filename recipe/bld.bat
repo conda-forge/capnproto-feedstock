@@ -1,7 +1,7 @@
 mkdir build
 cd build
 
-mkdir %LIBRARY_PREFIX%\ssl\certs
+mkdir %LIBRARY_PREFIX%\certs
 
 cmake ^
     -G "NMake Makefiles" ^
