@@ -7,6 +7,8 @@ package:
 source:
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
   md5: 4dd1aaacff63781087e89097f9b02542
+  patches:
+    - fix-msvc.diff
 
 build:
   number: 1

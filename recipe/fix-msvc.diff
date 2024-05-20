@@ -1,0 +1,13 @@
+--- c++/src/kj/CMakeLists.txt.bak   2024-05-20 14:48:26.618071654 -0500
++++ c++/src/kj/CMakeLists.txt       2024-05-20 14:53:15.106427359 -0500
+@@ -139,6 +139,9 @@
+ )
+ if(NOT CAPNP_LITE)
+   add_library(kj-async ${kj-async_sources})
++  if (MSVC)
++    set_property(SOURCE async.c++ APPEND PROPERTY COMPILE_OPTIONS "/O1")
++  endif()
+   add_library(CapnProto::kj-async ALIAS kj-async)
+   target_link_libraries(kj-async PUBLIC kj)
+   if(WITH_FIBERS)
+
