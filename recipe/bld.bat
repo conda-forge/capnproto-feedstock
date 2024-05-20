@@ -1,6 +1,8 @@
 mkdir build
 cd build
 
+mkdir -p %LIBRARY_PREFIX%/ssl/certs
+
 cmake ^
     -G "NMake Makefiles" ^
     -DCMAKE_BUILD_TYPE=Release ^

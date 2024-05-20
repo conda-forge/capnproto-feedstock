@@ -5,7 +5,6 @@ package:
   version: {{ version }}
 
 source:
-  fn: v{{ version }}.tar.gz
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
   md5: 4dd1aaacff63781087e89097f9b02542
 
