@@ -12,8 +12,6 @@ fi
 BUILD_ARCH=${CONDA_TOOLCHAIN_BUILD%%-*}
 HOST_ARCH=${CONDA_TOOLCHAIN_HOST%%-*}
 
-mkdir -p $PREFIX/ssl/certs
-
 configure_cmd=(./configure --enable-shared --prefix=$PREFIX)
 
 # cross-compiling needs to use prebuilt capnp

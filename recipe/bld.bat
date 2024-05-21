@@ -1,8 +1,6 @@
 mkdir build
 cd build
 
-mkdir %LIBRARY_PREFIX%\certs
-
 cmake ^
     -G "NMake Makefiles" ^
     -DCMAKE_BUILD_TYPE=Release ^
