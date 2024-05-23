@@ -186,4 +186,5 @@ Feedstock Maintainers
 * [@LehMaxence](https://github.com/LehMaxence/)
 * [@Shelnutt2](https://github.com/Shelnutt2/)
 * [@ihnorton](https://github.com/ihnorton/)
+* [@isuruf](https://github.com/isuruf/)
 

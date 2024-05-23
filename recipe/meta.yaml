@@ -5,9 +5,11 @@ package:
   version: {{ version }}
 
 source:
-  fn: v{{ version }}.tar.gz
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
   md5: 4dd1aaacff63781087e89097f9b02542
+  patches:
+    # MSVC miscompiles async.c++ file when /O2 is given
+    - fix-msvc.diff
 
 build:
   number: 1
@@ -24,14 +26,13 @@ requirements:
     - make  # [not win]
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
     - automake   # [unix]
     - libtool    # [unix]
     - binutils    # [unix]
   host:
     - zlib
-    - openssl 1.1*
-  run:
-    - __osx >={{ MACOSX_DEPLOYMENT_TARGET|default("10.9") }}  # [osx]
+    - openssl
 
 test:
   source_files:
@@ -67,6 +68,7 @@ about:
 
 extra:
   recipe-maintainers:
+    - isuruf
     - LehMaxence
     - ihnorton
     - Shelnutt2
