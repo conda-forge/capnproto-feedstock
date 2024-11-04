@@ -64,10 +64,13 @@ test:
     - if not exist %LIBRARY_LIB%\\kj.lib exit 1  # [win]
 
 about:
-  home: http://capnproto.org
+  home: https://capnproto.org
   license_file: LICENSE
   license: MIT
+  license_family: MIT
   summary: An insanely fast data interchange format and capability-based RPC system.
+  dev_url: https://github.com/capnproto/capnproto
+  doc_url: https://capnproto.org
 
 extra:
   recipe-maintainers:
