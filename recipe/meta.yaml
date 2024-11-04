@@ -12,7 +12,7 @@ source:
     - fix-msvc.diff
 
 build:
-  number: 2
+  number: 3
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
