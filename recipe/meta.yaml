@@ -1,4 +1,4 @@
-{% set version = "0.10.4" %}
+{% set version = "1.0.1" %}
 
 package:
   name: capnproto
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://capnproto.org/capnproto-c++-{{ version }}.tar.gz
-  sha256: 981e7ef6dbe3ac745907e55a78870fbb491c5d23abd4ebc04e20ec235af4458c
+  sha256: 0f7f4b8a76a2cdb284fddef20de8306450df6dd031a47a15ac95bc43c3358e09
 
 build:
   number: 0
