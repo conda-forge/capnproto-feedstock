@@ -12,7 +12,7 @@ source:
     - fix-msvc.diff
 
 build:
-  number: 2
+  number: 3
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
@@ -64,10 +64,13 @@ test:
     - if not exist %LIBRARY_LIB%\\kj.lib exit 1  # [win]
 
 about:
-  home: http://capnproto.org
+  home: https://capnproto.org
   license_file: LICENSE
   license: MIT
+  license_family: MIT
   summary: An insanely fast data interchange format and capability-based RPC system.
+  dev_url: https://github.com/capnproto/capnproto
+  doc_url: https://capnproto.org
 
 extra:
   recipe-maintainers:

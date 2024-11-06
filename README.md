@@ -3,11 +3,15 @@ About capnproto-feedstock
 
 Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/capnproto-feedstock/blob/main/LICENSE.txt)
 
-Home: http://capnproto.org
+Home: https://capnproto.org
 
 Package license: MIT
 
 Summary: An insanely fast data interchange format and capability-based RPC system.
+
+Development: https://github.com/capnproto/capnproto
+
+Documentation: https://capnproto.org
 
 Current build status
 ====================
