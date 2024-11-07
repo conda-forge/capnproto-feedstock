@@ -1,4 +1,4 @@
-{% set version = "1.0.2" %}
+{% set version = "1.0.1" %}
 
 package:
   name: capnproto
@@ -6,13 +6,13 @@ package:
 
 source:
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: 4dd1aaacff63781087e89097f9b02542
+  md5: a05c8010505f091a85b586968c0e5fbf
   patches:
     # MSVC miscompiles async.c++ file when /O2 is given
     - fix-msvc.diff
 
 build:
-  number: 3
+  number: 1
   run_exports:
     # soname changes with every release
     # https://abi-laboratory.pro/index.php?view=timeline&l=capnproto
