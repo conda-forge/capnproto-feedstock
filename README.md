@@ -205,4 +205,5 @@ Feedstock Maintainers
 * [@Shelnutt2](https://github.com/Shelnutt2/)
 * [@ihnorton](https://github.com/ihnorton/)
 * [@isuruf](https://github.com/isuruf/)
+* [@jdblischak](https://github.com/jdblischak/)
 
