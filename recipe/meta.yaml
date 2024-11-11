@@ -41,13 +41,13 @@ test:
   source_files:
     - c++/samples
   commands:
-    - capnp --help  # [not (osx and arm64)]
-    - capnpc --help  # [not (osx and arm64)]
-    - capnpc-c++ --help  # [not (osx and arm64)]
-    - capnpc-capnp --help  # [not (osx and arm64)]
+    - capnp --help
+    - capnpc --help
+    - capnpc-c++ --help
+    - capnpc-capnp --help
 
-    - capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp  # [unix and (not (osx and arm64))]
-    - test -f c++/samples/addressbook.capnp.c++  # [unix and (not (osx and arm64))]
+    - capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp  # [unix]
+    - test -f c++/samples/addressbook.capnp.c++  # [unix]
 
     - capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp  # [win]
     - if not exist c++/samples/addressbook.capnp.c++ exit 1  # [win]
