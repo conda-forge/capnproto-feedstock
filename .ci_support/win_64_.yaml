@@ -2,6 +2,8 @@ c_compiler:
 - vs2019
 c_stdlib:
 - vs
+capnproto:
+- 1.0.2
 channel_sources:
 - conda-forge
 channel_targets:
