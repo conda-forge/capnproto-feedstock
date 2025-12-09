@@ -26,18 +26,17 @@ build:
 
 requirements:
   build:
-    - if: win
-      then: cmake
-    - if: not win
-      then: make
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
     - if: unix
       then:
+        - make
         - automake
         - libtool
         - binutils
+    - if: win
+      then: cmake
     # cross-compiling needs to use prebuilt capnproto
     # https://github.com/capnproto/capnproto/issues/1815#issuecomment-1732327995
     - if: build_platform != target_platform
