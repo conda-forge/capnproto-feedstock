@@ -30,11 +30,10 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ stdlib('c') }}
     - if: unix
-      then: automake
-    - if: unix
-      then: libtool
-    - if: unix
-      then: binutils
+      then:
+        - automake
+        - libtool
+        - binutils
     # cross-compiling needs to use prebuilt capnproto
     # https://github.com/capnproto/capnproto/issues/1815#issuecomment-1732327995
     - if: build_platform != target_platform
@@ -55,31 +54,25 @@ tests:
       - capnpc-c++ --help
       - capnpc-capnp --help
       - if: unix
-        then: capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp
-      - if: unix
-        then: test -f c++/samples/addressbook.capnp.c++
+        then:
+          - capnpc -I"${PREFIX}/include" -oc++ c++/samples/addressbook.capnp
+          - test -f c++/samples/addressbook.capnp.c++
       - if: win
-        then: capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp
-      - if: win
-        then: if not exist c++/samples/addressbook.capnp.c++ exit 1
-      - if: unix
-        then: test -d "$PREFIX/include/capnp"
-      - if: win
-        then: if not exist %LIBRARY_INC%\\capnp exit 1
-      - if: unix
-        then: test -f "$PREFIX/lib/libcapnp${SHLIB_EXT}"
-      - if: unix
-        then: test -f "$PREFIX/lib/libcapnpc${SHLIB_EXT}"
-      - if: unix
-        then: test -f "$PREFIX/lib/libcapnp-rpc${SHLIB_EXT}"
-      - if: unix
-        then: test -f "$PREFIX/lib/libkj${SHLIB_EXT}"
-      - if: unix
-        then: test -f "$PREFIX/lib/libkj-async${SHLIB_EXT}"
-      - if: win
-        then: if not exist %LIBRARY_LIB%\\capnp.lib exit 1
-      - if: win
-        then: if not exist %LIBRARY_LIB%\\kj.lib exit 1
+        then:
+          - capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp
+          - if not exist c++/samples/addressbook.capnp.c++ exit 1
+  - package_contents:
+      lib:
+        - capnp
+        - capnpc
+        - capnp-rpc
+        - kj
+        - kj-async
+      include:
+        - capnp/*.h
+      files:
+        - ${{ "Library/" if win }}lib/pkgconfig/*.pc
+        - ${{ "Library/" if win }}lib/cmake/CapnProto/*.cmake
 
 about:
   license_file: LICENSE
