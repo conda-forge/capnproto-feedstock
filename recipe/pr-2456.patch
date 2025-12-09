@@ -1,0 +1,107 @@
+--- a/c++/CMakeLists.txt
++++ b/c++/CMakeLists.txt
+@@ -208,43 +208,40 @@ install(FILES
+ #install CapnProtoMacros for CapnProtoConfig.cmake build directory consumers
+ configure_file(cmake/CapnProtoMacros.cmake cmake/CapnProtoMacros.cmake COPYONLY)
+
+-if(NOT MSVC)  # Don't install pkg-config files when building with MSVC
+-  # Variables for pkg-config files
+-  set(prefix "${CMAKE_INSTALL_PREFIX}")
+-  set(exec_prefix "") # not needed since we use absolute paths in libdir and includedir
+-  set(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
+-  set(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+-  set(PTHREAD_CFLAGS "-pthread")
+-  set(STDLIB_FLAG)  # TODO: Unsupported
+-
+-  set(CAPNP_PKG_CONFIG_FILES
+-    pkgconfig/kj.pc
+-    pkgconfig/capnp.pc
+-    pkgconfig/capnpc.pc
+-  )
+-
+-  if(NOT CAPNP_LITE)
+-    list(APPEND CAPNP_PKG_CONFIG_FILES
+-      pkgconfig/kj-async.pc
+-      pkgconfig/kj-gzip.pc
+-      pkgconfig/kj-http.pc
+-      pkgconfig/kj-test.pc
+-      pkgconfig/kj-tls.pc
+-      pkgconfig/capnp-rpc.pc
+-      pkgconfig/capnp-websocket.pc
+-      pkgconfig/capnp-json.pc
+-    )
+-  endif()
++# Variables for pkg-config files
++set(prefix "${CMAKE_INSTALL_PREFIX}")
++set(exec_prefix "") # not needed since we use absolute paths in libdir and includedir
++set(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
++set(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
++set(PTHREAD_CFLAGS "-pthread")
++set(STDLIB_FLAG)  # TODO: Unsupported
++set(CAPNP_PKG_CONFIG_FILES
++  pkgconfig/kj.pc
++  pkgconfig/capnp.pc
++  pkgconfig/capnpc.pc
++)
+
+-  foreach(pcfile ${CAPNP_PKG_CONFIG_FILES})
+-    configure_file(${pcfile}.in "${CMAKE_CURRENT_BINARY_DIR}/${pcfile}" @ONLY)
+-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pcfile}" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+-  endforeach()
+-
+-  unset(STDLIB_FLAG)
+-  unset(PTHREAD_CFLAGS)
+-  unset(includedir)
+-  unset(libdir)
+-  unset(exec_prefix)
+-  unset(prefix)
++if(NOT CAPNP_LITE)
++  list(APPEND CAPNP_PKG_CONFIG_FILES
++    pkgconfig/kj-async.pc
++    pkgconfig/kj-gzip.pc
++    pkgconfig/kj-http.pc
++    pkgconfig/kj-test.pc
++    pkgconfig/kj-tls.pc
++    pkgconfig/capnp-rpc.pc
++    pkgconfig/capnp-websocket.pc
++    pkgconfig/capnp-json.pc
++  )
+ endif()
++
++foreach(pcfile ${CAPNP_PKG_CONFIG_FILES})
++  configure_file(${pcfile}.in "${CMAKE_CURRENT_BINARY_DIR}/${pcfile}" @ONLY)
++  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${pcfile}" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
++endforeach()
++
++unset(STDLIB_FLAG)
++unset(PTHREAD_CFLAGS)
++unset(includedir)
++unset(libdir)
++unset(exec_prefix)
++unset(prefix)
+
+--- a/c++/CMakeLists.txt
++++ b/c++/CMakeLists.txt
+@@ -213,7 +213,9 @@ set(prefix "${CMAKE_INSTALL_PREFIX}")
+ set(exec_prefix "") # not needed since we use absolute paths in libdir and includedir
+ set(libdir "${CMAKE_INSTALL_FULL_LIBDIR}")
+ set(includedir "${CMAKE_INSTALL_FULL_INCLUDEDIR}")
+-set(PTHREAD_CFLAGS "-pthread")
++if(NOT MSVC)
++  set(PTHREAD_CFLAGS "-pthread")
++endif()
+ set(STDLIB_FLAG)  # TODO: Unsupported
+ set(CAPNP_PKG_CONFIG_FILES
+   pkgconfig/kj.pc
+@@ -240,8 +242,10 @@ foreach(pcfile ${CAPNP_PKG_CONFIG_FILES})
+ endforeach()
+
+ unset(STDLIB_FLAG)
+-unset(PTHREAD_CFLAGS)
+ unset(includedir)
+ unset(libdir)
+ unset(exec_prefix)
+ unset(prefix)
++if(NOT MSVC)
++  unset(PTHREAD_CFLAGS)
++endif()

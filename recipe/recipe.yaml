@@ -13,6 +13,10 @@ source:
   patches:
     # MSVC miscompiles async.c++ file when /O2 is given
     - fix-msvc.diff
+    - if: win
+      then:
+        # Enable pkg-config file installation on Windows
+        - pr-2456.patch
 
 build:
   number: 1
