@@ -1,7 +1,7 @@
 mkdir build
 cd build
 
-cmake ^
+cmake %CMAKE_ARGS% ^
     -G "NMake Makefiles" ^
     -DCMAKE_POSITION_INDEPENDENT_CODE=1 ^
     ..
