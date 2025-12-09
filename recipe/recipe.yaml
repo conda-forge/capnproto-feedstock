@@ -1,0 +1,98 @@
+schema_version: 1
+
+context:
+  version: 1.2.0
+
+package:
+  name: capnproto
+  version: ${{ version }}
+
+source:
+  url: https://github.com/capnproto/capnproto/archive/v${{ version }}.tar.gz
+  md5: ea71e0e4f918c3ff724c737afcc2c490
+  patches:
+    # MSVC miscompiles async.c++ file when /O2 is given
+    - fix-msvc.diff
+
+build:
+  number: 1
+  prefix_detection:
+    ignore:
+      - bin/capnp
+
+requirements:
+  build:
+    - if: win
+      then: cmake
+    - if: not win
+      then: make
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - if: unix
+      then: automake
+    - if: unix
+      then: libtool
+    - if: unix
+      then: binutils
+    # cross-compiling needs to use prebuilt capnproto
+    # https://github.com/capnproto/capnproto/issues/1815#issuecomment-1732327995
+    - if: build_platform != target_platform
+      then: capnproto
+  host:
+    - zlib
+    - openssl
+  run_exports:
+    - ${{ pin_subpackage('capnproto', upper_bound='x.x.x') }}
+
+tests:
+  - files:
+      source:
+        - c++/samples
+    script:
+      - capnp --help
+      - capnpc --help
+      - capnpc-c++ --help
+      - capnpc-capnp --help
+      - if: unix
+        then: capnpc -I"$PREFIX/include" -oc++ c++/samples/addressbook.capnp
+      - if: unix
+        then: test -f c++/samples/addressbook.capnp.c++
+      - if: win
+        then: capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp
+      - if: win
+        then: if not exist c++/samples/addressbook.capnp.c++ exit 1
+      - if: unix
+        then: test -d "$PREFIX/include/capnp"
+      - if: win
+        then: if not exist %LIBRARY_INC%\\capnp exit 1
+      - if: unix
+        then: test -f "$PREFIX/lib/libcapnp${SHLIB_EXT}"
+      - if: unix
+        then: test -f "$PREFIX/lib/libcapnpc${SHLIB_EXT}"
+      - if: unix
+        then: test -f "$PREFIX/lib/libcapnp-rpc${SHLIB_EXT}"
+      - if: unix
+        then: test -f "$PREFIX/lib/libkj${SHLIB_EXT}"
+      - if: unix
+        then: test -f "$PREFIX/lib/libkj-async${SHLIB_EXT}"
+      - if: win
+        then: if not exist %LIBRARY_LIB%\\capnp.lib exit 1
+      - if: win
+        then: if not exist %LIBRARY_LIB%\\kj.lib exit 1
+
+about:
+  license_file: LICENSE
+  license: MIT
+  summary: An insanely fast data interchange format and capability-based RPC system.
+  homepage: https://capnproto.org
+  repository: https://github.com/capnproto/capnproto
+  documentation: https://capnproto.org
+
+extra:
+  recipe-maintainers:
+    - jdblischak
+    - isuruf
+    - LehMaxence
+    - ihnorton
+    - Shelnutt2
