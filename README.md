@@ -206,4 +206,5 @@ Feedstock Maintainers
 * [@ihnorton](https://github.com/ihnorton/)
 * [@isuruf](https://github.com/isuruf/)
 * [@jdblischak](https://github.com/jdblischak/)
+* [@munechika-koyo](https://github.com/munechika-koyo/)
 
