@@ -64,11 +64,11 @@ tests:
       lib:
         - if: unix
           then:
-        - capnp
-        - capnpc
-        - capnp-rpc
-        - kj
-        - kj-async
+            - capnp
+            - capnpc
+            - capnp-rpc
+            - kj
+            - kj-async
       include:
         - capnp/*.h
       files:
