@@ -30,6 +30,8 @@ requirements:
         - make
         - automake
         - libtool
+    - if: linux
+      then:
         - binutils
     - if: win
       then: cmake
