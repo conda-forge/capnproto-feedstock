@@ -1,12 +1,9 @@
 mkdir build
 cd build
 
-cmake ^
+cmake %CMAKE_ARGS% ^
     -G "NMake Makefiles" ^
-    -DCMAKE_BUILD_TYPE=Release ^
     -DCMAKE_POSITION_INDEPENDENT_CODE=1 ^
-    -DCMAKE_INSTALL_PREFIX="%LIBRARY_PREFIX%" ^
-    -DCMAKE_INSTALL_LIBDIR=lib ^
     ..
 if errorlevel 1 exit 1
 

@@ -1,0 +1,103 @@
+schema_version: 1
+
+context:
+  version: 1.3.0
+
+package:
+  name: capnproto
+  version: ${{ version }}
+
+source:
+  url: https://github.com/capnproto/capnproto/archive/v${{ version }}.tar.gz
+  sha256: 01ab2ba7f52fcc3c51a10e22935aae56f3bc5e99b726b7e507fe6700cb12147d
+  patches:
+    # MSVC miscompiles async.c++ file when /O2 is given
+    - fix-msvc.diff
+
+build:
+  number: 1
+  prefix_detection:
+    ignore:
+      - bin/capnp
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ stdlib('c') }}
+    - if: unix
+      then:
+        - make
+        - automake
+        - libtool
+    - if: linux
+      then:
+        - binutils
+    - if: win
+      then: cmake
+    # cross-compiling needs to use prebuilt capnproto
+    # https://github.com/capnproto/capnproto/issues/1815#issuecomment-1732327995
+    - if: build_platform != target_platform
+      then: capnproto
+  host:
+    - zlib
+    - openssl
+  run_exports:
+    - ${{ pin_subpackage('capnproto', upper_bound='x.x.x') }}
+
+tests:
+  - files:
+      source:
+        - c++/samples
+    script:
+      - capnp --help
+      - capnpc --help
+      - capnpc-c++ --help
+      - capnpc-capnp --help
+      - if: unix
+        then:
+          - capnpc -I"${PREFIX}/include" -oc++ c++/samples/addressbook.capnp
+          - test -f c++/samples/addressbook.capnp.c++
+      - if: win
+        then:
+          - capnpc -I"%LIBRARY_INC%" -oc++ c++/samples/addressbook.capnp
+          - if not exist c++/samples/addressbook.capnp.c++ exit 1
+  - package_contents:
+      lib:
+        - if: unix
+          then:
+            - capnp
+            - capnpc
+            - capnp-rpc
+            - kj
+            - kj-async
+      include:
+        - capnp/*.h
+      files:
+        - ${{ "Library/" if win }}lib/pkgconfig/*.pc
+        - ${{ "Library/" if win }}lib/cmake/CapnProto/*.cmake
+        - if: win
+          then:
+            # Static libraries on Windows
+            - Library/lib/capnp.lib
+            - Library/lib/capnpc.lib
+            - Library/lib/capnp-rpc.lib
+            - Library/lib/kj.lib
+            - Library/lib/kj-async.lib
+
+about:
+  license_file: LICENSE
+  license: MIT
+  summary: An insanely fast data interchange format and capability-based RPC system.
+  homepage: https://capnproto.org
+  repository: https://github.com/capnproto/capnproto
+  documentation: https://capnproto.org
+
+extra:
+  recipe-maintainers:
+    - jdblischak
+    - isuruf
+    - LehMaxence
+    - ihnorton
+    - Shelnutt2
+    - munechika-koyo
