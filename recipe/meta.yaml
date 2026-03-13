@@ -1,4 +1,4 @@
-{% set version = "1.3.0" %}
+{% set version = "1.4.0" %}
 
 package:
   name: capnproto
@@ -6,7 +6,7 @@ package:
 
 source:
   url: https://github.com/capnproto/capnproto/archive/v{{ version }}.tar.gz
-  md5: 158ae1b2e9ae84ebdb02d12402f2188b
+  md5: 5ea9e0378d7836dd87d3fe662eb53579
   patches:
     # MSVC miscompiles async.c++ file when /O2 is given
     - fix-msvc.diff
